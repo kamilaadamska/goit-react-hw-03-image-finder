@@ -3,7 +3,7 @@ import searchIcon from '../../icons/search.svg';
 
 export const Searchbar = () => {
   return (
-    <div className={css.containerHeader}>
+    <header className={css.searchbar}>
       <form className={css.searchForm}>
         <button className={css.formBtn} type="submit">
           <img src={searchIcon} alt="search icon" width="15px" />
@@ -13,9 +13,10 @@ export const Searchbar = () => {
           type="text"
           name="searchQuery"
           autocomplete="off"
+          autofocus
           placeholder="Search images and photos"
         />
       </form>
-    </div>
+    </header>
   );
 };
