@@ -1,0 +1,13 @@
+.containerBtn {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+.loadMore {
+  padding: 8px;
+  border-radius: 3px;
+  border: 1px solid black;
+  font-size: 14px;
+  min-width: 10%;
+  cursor: pointer;
+}
