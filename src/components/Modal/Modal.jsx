@@ -1,13 +1,10 @@
 import css from './modal.module.css';
 
-export const Modal = () => {
+export const Modal = ({ imgUrl, tagsForAlt, showModal }) => {
   return (
-    <div className={css.overlay}>
+    <div className={showModal ? css.overlay : css.isHidden}>
       <div className={css.modal}>
-        <img
-          src="https://zoonews.pl/wp-content/uploads/2023/02/male-pieski-ktore-nie-rosna.jpg"
-          alt=""
-        />
+        <img src={imgUrl} alt={tagsForAlt} className={css.modalImg} />
       </div>
     </div>
   );

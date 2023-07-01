@@ -1,9 +1,7 @@
 import { Searchbar } from './Searchbar';
 import { ImageGallery } from './ImageGallery';
-import { ImageGalleryItem } from './ImageGalleryItem';
 import { Button } from './Button';
 import { Loader } from './Loader';
-// import { Modal } from './Modal';
 import { Component } from 'react';
 import { fetchImages, PER_PAGE } from 'services/api';
 import { Error } from './Error';
@@ -16,6 +14,9 @@ class App extends Component {
     currentPage: 1,
     searchedPhrase: '',
     totalPages: 0,
+    show: false,
+    imgUrl: '',
+    tags: '',
   };
 
   getSearchedPhrase = e => {
@@ -73,15 +74,38 @@ class App extends Component {
     }
   }
 
+  toggleModal = e => {
+    const url = e.target.dataset.imageurl;
+    const tagsForalt = e.target.alt;
+    this.setState(prevState => ({
+      show: !prevState.show,
+      imgUrl: url,
+      tags: tagsForalt,
+    }));
+  };
+
   render() {
-    const { images, isLoading, error, currentPage, totalPages } = this.state;
+    const {
+      images,
+      isLoading,
+      error,
+      currentPage,
+      totalPages,
+      show,
+      imgUrl,
+      tags,
+    } = this.state;
 
     return (
       <>
         <Searchbar findImages={this.getSearchedPhrase} />
-        <ImageGallery>
-          {images.length !== 0 && <ImageGalleryItem images={images} />}
-        </ImageGallery>
+        <ImageGallery
+          images={images}
+          onClick={this.toggleModal}
+          showModal={show}
+          imgUrl={imgUrl}
+          tags={tags}
+        />
         {isLoading && <Loader />}
         {error && <Error />}
         {currentPage < totalPages && <Button onClick={this.loadMore} />}
