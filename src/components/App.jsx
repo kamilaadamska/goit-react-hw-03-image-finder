@@ -65,7 +65,7 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { searchedPhrase, currentPage } = this.state;
+    const { searchedPhrase, currentPage, show } = this.state;
 
     if (
       searchedPhrase !== prevState.searchedPhrase ||
@@ -73,9 +73,17 @@ class App extends Component {
     ) {
       this.getImages();
     }
+
+    if (show) {
+      const modal = document.getElementById('modal');
+      modal.focus();
+    }
   }
 
   toggleModal = e => {
+    if (e.currentTarget !== e.target) {
+      return;
+    }
     const url = e.target.dataset.imageurl;
     const tagsForalt = e.target.alt;
     this.setState(prevState => ({
@@ -83,6 +91,15 @@ class App extends Component {
       imgUrl: url,
       tags: tagsForalt,
     }));
+  };
+
+  onKeyDown = e => {
+    e.preventDefault();
+    if (e.key === 'Escape') {
+      this.setState(prevState => ({
+        show: !prevState.show,
+      }));
+    }
   };
 
   render() {
@@ -101,7 +118,14 @@ class App extends Component {
       <>
         <Searchbar findImages={this.getSearchedPhrase} />
         <ImageGallery images={images} onClick={this.toggleModal} />
-        {show && <Modal imgUrl={imgUrl} tagsForAlt={tags} />}
+        {show && (
+          <Modal
+            imgUrl={imgUrl}
+            tagsForAlt={tags}
+            hideModal={this.toggleModal}
+            onKeyDown={this.onKeyDown}
+          />
+        )}
         {isLoading && <Loader />}
         {error && <Error />}
         {currentPage < totalPages && <Button onClick={this.loadMore} />}
