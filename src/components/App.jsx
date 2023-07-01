@@ -3,9 +3,10 @@ import { ImageGallery } from './ImageGallery';
 import { ImageGalleryItem } from './ImageGalleryItem';
 import { Button } from './Button';
 import { Loader } from './Loader';
-import { Modal } from './Modal';
+// import { Modal } from './Modal';
 import { Component } from 'react';
-import { getImages } from 'services/api';
+import { fetchImages, PER_PAGE } from 'services/api';
+import { Error } from './Error';
 
 class App extends Component {
   state = {
@@ -14,6 +15,7 @@ class App extends Component {
     error: '',
     currentPage: 1,
     searchedPhrase: '',
+    totalPages: 0,
   };
 
   getSearchedPhrase = e => {
@@ -26,19 +28,22 @@ class App extends Component {
         currentPage: 1,
         images: [],
       });
+      searchForm.reset();
     }
   };
 
-  fetchImages = async () => {
+  getImages = async () => {
     const { searchedPhrase, currentPage } = this.state;
 
     try {
       this.setState({ isLoading: true, error: '' });
-      const newImages = await getImages(searchedPhrase, currentPage);
+      const newData = await fetchImages(searchedPhrase, currentPage);
+      const newImages = newData.hits;
       if (newImages) {
         this.setState(prevState => ({
           images: [...prevState.images, ...newImages],
           isLoading: false,
+          totalPages: Math.ceil(newData.totalHits / PER_PAGE),
         }));
       } else {
         throw new Error();
@@ -51,6 +56,12 @@ class App extends Component {
     }
   };
 
+  loadMore = () => {
+    this.setState(prevState => ({
+      currentPage: prevState.currentPage + 1,
+    }));
+  };
+
   componentDidUpdate(prevProps, prevState) {
     const { searchedPhrase, currentPage } = this.state;
 
@@ -58,12 +69,12 @@ class App extends Component {
       searchedPhrase !== prevState.searchedPhrase ||
       currentPage !== prevState.currentPage
     ) {
-      this.fetchImages();
+      this.getImages();
     }
   }
 
   render() {
-    const { images, isLoading, error } = this.state;
+    const { images, isLoading, error, currentPage, totalPages } = this.state;
 
     return (
       <>
@@ -72,8 +83,8 @@ class App extends Component {
           {images.length !== 0 && <ImageGalleryItem images={images} />}
         </ImageGallery>
         {isLoading && <Loader />}
-        {error && <p>Something went wrong...</p>}
-        <Button />
+        {error && <Error />}
+        {currentPage < totalPages && <Button onClick={this.loadMore} />}
       </>
     );
   }

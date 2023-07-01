@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const API_URL = 'https://pixabay.com/api';
 const API_KEY = '36365586-331bc85183b3fd7ba137836b3';
-const PER_PAGE = 12;
+export const PER_PAGE = 12;
 
-export const getImages = async (searchedPhrase, pageNo) => {
+export const fetchImages = async (searchedPhrase, pageNo) => {
   try {
     const response = await axios.get(`${API_URL}`, {
       params: {
@@ -18,7 +18,7 @@ export const getImages = async (searchedPhrase, pageNo) => {
     });
     if (response.data.hits.length === 0) throw new Error();
     if (searchedPhrase === '') throw new Error();
-    return response.data.hits;
+    return response.data;
   } catch (error) {
     console.log(error);
   }

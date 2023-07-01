@@ -1,5 +1,5 @@
 import css from './searchbar.module.css';
-import searchIcon from '../../icons/search.svg';
+import searchIcon from '../../images/search.svg';
 
 export const Searchbar = ({ findImages }) => {
   return (
