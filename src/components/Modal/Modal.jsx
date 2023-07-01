@@ -1,4 +1,5 @@
 import css from './modal.module.css';
+import PropTypes from 'prop-types';
 
 export const Modal = ({ imgUrl, tagsForAlt, hideModal, onKeyDown }) => {
   return (
@@ -8,4 +9,11 @@ export const Modal = ({ imgUrl, tagsForAlt, hideModal, onKeyDown }) => {
       </div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  imgUrl: PropTypes.string,
+  tagsForAlt: PropTypes.string,
+  hideModal: PropTypes.func,
+  onKeyDown: PropTypes.func,
 };
