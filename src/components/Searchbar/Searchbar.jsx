@@ -1,10 +1,10 @@
 import css from './searchbar.module.css';
 import searchIcon from '../../icons/search.svg';
 
-export const Searchbar = () => {
+export const Searchbar = ({ findImages }) => {
   return (
     <header className={css.searchbar}>
-      <form className={css.searchForm}>
+      <form className={css.searchForm} onSubmit={findImages}>
         <button className={css.formBtn} type="submit">
           <img src={searchIcon} alt="search icon" width="15px" />
         </button>
@@ -12,8 +12,8 @@ export const Searchbar = () => {
           className={css.formInput}
           type="text"
           name="searchQuery"
-          autocomplete="off"
-          autofocus
+          autoComplete="off"
+          autoFocus
           placeholder="Search images and photos"
         />
       </form>
