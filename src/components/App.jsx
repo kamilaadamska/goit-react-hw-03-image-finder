@@ -5,6 +5,7 @@ import { Loader } from './Loader';
 import { Component } from 'react';
 import { fetchImages, PER_PAGE } from 'services/api';
 import { Error } from './Error';
+import { Modal } from './Modal';
 
 class App extends Component {
   state = {
@@ -99,13 +100,8 @@ class App extends Component {
     return (
       <>
         <Searchbar findImages={this.getSearchedPhrase} />
-        <ImageGallery
-          images={images}
-          onClick={this.toggleModal}
-          showModal={show}
-          imgUrl={imgUrl}
-          tags={tags}
-        />
+        <ImageGallery images={images} onClick={this.toggleModal} />
+        {show && <Modal imgUrl={imgUrl} tagsForAlt={tags} />}
         {isLoading && <Loader />}
         {error && <Error />}
         {currentPage < totalPages && <Button onClick={this.loadMore} />}
