@@ -30,7 +30,6 @@ class App extends Component {
         currentPage: 1,
         images: [],
       });
-      searchForm.reset();
     }
   };
 
@@ -54,6 +53,7 @@ class App extends Component {
       this.setState({
         error,
         isLoading: false,
+        totalPages: 0,
       });
     }
   };
@@ -77,6 +77,9 @@ class App extends Component {
     if (show) {
       const modal = document.getElementById('modal');
       modal.focus();
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
     }
   }
 
