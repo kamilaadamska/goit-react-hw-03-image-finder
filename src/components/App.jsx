@@ -37,7 +37,7 @@ class App extends Component {
     const { searchedPhrase, currentPage } = this.state;
 
     try {
-      this.setState({ isLoading: true, error: '' });
+      this.setState({ isLoading: true, error: '', totalPages: 0 });
       const newData = await fetchImages(searchedPhrase, currentPage);
       const newImages = newData.hits;
       if (newImages) {
